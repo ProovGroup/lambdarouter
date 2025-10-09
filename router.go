@@ -270,8 +270,8 @@ func (t *TreeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 		event.RequestContext.Authorizer = res.Context
 	}
-	responce, _ := t.ServeLookupResult(context.Background(), event, result)
-	ResToHttp(w, r, responce)
+	response, _ := t.ServeLookupResult(context.Background(), event, result)
+	ResToHttp(w, r, response)
 }
 
 func (t *TreeMux) ServeLambda(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
