@@ -326,7 +326,7 @@ func New() *TreeMux {
 		EscapeAddedRoutes:       false,
 	}
 	tm.Group.mux = tm
-	if len(os.Getenv("AWS_EXECUTION_ENV")) == 0 {
+	if len(os.Getenv("AWS_LAMBDA_FUNCTION_NAME")) == 0 {
 		tm.Group = *tm.NewGroup("/:__stage__")
 	}
 	return tm

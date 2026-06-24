@@ -1,7 +1,7 @@
 This router is fully based on https://github.com/dimfeld/httptreemux
-it was modified for use on AWS Lambda and take all advantage on this  
+it was modified for use on AWS Lambda and take all advantage on this
 
-it's possible to use on local with builtin server 
+it's possible to use on local with builtin server
 NOT USE BUILTIN SERVER ON PRODUCTION
 
 ## Usage
@@ -41,15 +41,15 @@ func main() {
 ```
 
 ## Serve
-Serve method on router check if AWS_EXECUTION_ENV is set in env if is not set start mux server with port passed in argument else call lambda.Start(...) from aws sdk
+Serve method on router check if AWS_LAMBDA_FUNCTION_NAME is set in env if is not set start mux server with port passed in argument else call lambda.Start(...) from aws sdk
 
 on mux server all path has prefixed by ```/:__stage__```
-when request oncomming the stage variable is stored in event.RequestContext.Stage 
+when request oncomming the stage variable is stored in event.RequestContext.Stage
 
 ## Stage Variables
 if you need to pass a stageVariables to lambda with http handler add them on serv
 
-exemple: 
+exemple:
 ```go
 var variables = lambdarouter.StageVariables{
 	"stagename": {
@@ -58,7 +58,7 @@ var variables = lambdarouter.StageVariables{
 }
 
 router.Serv(":8080", variables)
-``` 
+```
 
 ## Authorizer
 ON PROGRESS
@@ -76,4 +76,4 @@ func main() {
 }
 ```
 When you use builtin server it was call befor handler and passed on request.
-When you deploy on lambda create spesific lambda with env variable AUTHORIZER = true. 
+When you deploy on lambda create spesific lambda with env variable AUTHORIZER = true.
