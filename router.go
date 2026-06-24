@@ -18,8 +18,10 @@ import (
 )
 
 // The params argument contains the parameters parsed from wildcards and catch-alls in the URL.
-type HandlerFunc func(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error)
-type PanicHandler func(http.ResponseWriter, *http.Request, interface{})
+type (
+	HandlerFunc  func(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error)
+	PanicHandler func(http.ResponseWriter, *http.Request, interface{})
+)
 
 // RedirectBehavior sets the behavior when the router redirects the request to the
 // canonical version of the requested URL using RedirectTrailingSlash or RedirectClean.
@@ -301,8 +303,8 @@ func (t *TreeMux) ServeLambda(ctx context.Context, req events.APIGatewayProxyReq
 // requested method. It simply writes the status code http.StatusMethodNotAllowed and fills
 // in the `Allow` header value appropriately.
 func MethodNotAllowedHandler(w http.ResponseWriter, r *http.Request,
-	methods map[string]HandlerFunc) {
-
+	methods map[string]HandlerFunc,
+) {
 	for m := range methods {
 		w.Header().Add("Allow", m)
 	}
@@ -338,7 +340,7 @@ func (r *TreeMux) SetAuthorizer(handler func(ctx context.Context, request events
 
 func (r *TreeMux) Serve(addr string, stages StageVariables) error {
 	r.StageVariables = stages
-	if len(os.Getenv("AWS_EXECUTION_ENV")) == 0 {
+	if len(os.Getenv("AWS_LAMBDA_FUNCTION_NAME")) == 0 {
 		fmt.Printf("ListenAndServe on %s\n", addr)
 		return http.ListenAndServe(addr, r)
 	} else {
